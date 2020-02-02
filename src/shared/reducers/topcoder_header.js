@@ -14,6 +14,7 @@ import { handleActions } from 'redux-actions';
  */
 function create(initialState = {}) {
   const a = actions.topcoderHeader;
+
   return handleActions({
     [a.closeMenu](state) {
       return {

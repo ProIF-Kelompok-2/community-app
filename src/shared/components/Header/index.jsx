@@ -7,6 +7,30 @@ import Logo from 'assets/images/tc-logo.svg';
 let TopNavRef;
 let LoginNavRef;
 
+const notificationsDummy = [
+  {
+    content: 'Fuck You!',
+    href: 'a',
+    category: 'a',
+    tags: ['b'],
+    timestamp: 0,
+  },
+  {
+    content: 'Fuck You 2!',
+    href: 'b',
+    category: 'a',
+    tags: ['b'],
+    timestamp: 1,
+  },
+  {
+    content: 'Fuck You 3!',
+    href: 'c',
+    category: 'b',
+    tags: ['b'],
+    timestamp: 2,
+  },
+];
+
 try {
   // eslint-disable-next-line global-require
   const { TopNav, LoginNav } = require('navigation-component');
@@ -62,7 +86,7 @@ const Header = ({ profile }) => {
               switchText={config.ACCOUNT_MENU_SWITCH_TEXT}
               onSwitch={handleSwitchMenu}
               onMenuOpen={handleCloseOpenMore}
-              showNotification={false}
+              showNotification
               profile={normalizedProfile}
               authURLs={config.HEADER_AUTH_URLS}
             />
