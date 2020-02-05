@@ -45,6 +45,12 @@ function setCurrentNav(menuTitle, subMenuTitle) {
   };
 }
 
+function targetNotification(id) {
+  return {
+    id,
+  };
+}
+
 export default createActions({
   TOPCODER_HEADER: {
     /* Closes the currently opened menu, if any. */
@@ -59,5 +65,9 @@ export default createActions({
     OPEN_SEARCH: openSearch,
 
     SET_CURRENT_NAV: setCurrentNav,
+
+    DELETE_NOTIFICATIONS: targetNotification,
+    MARK_AS_READ: targetNotification,
+    MARK_ALL_AS_READ: _.noop,
   },
 });

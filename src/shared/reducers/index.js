@@ -120,6 +120,9 @@ export function factory(req) {
     page: pageFactory(req),
   }).then(resolvedReducers => redux.combineReducers((state) => {
     const res = { ...state };
+
+    res.notificationTask = topcoderHeader;
+
     if (req) {
       res.domain = `${req.protocol}://${req.headers.host || req.hostname}`;
       res.subdomainCommunity = getCommunityId(req.subdomains);

@@ -10,6 +10,8 @@ import { bindActionCreators } from 'redux';
 
 export default connect(
   state => ({
+    notifications: state.notificationTask.notifications,
+    notificationState: state.notificationTask.notificationState,
     ...state.topcoderHeader,
     profile: {
       ...state.auth.profile,

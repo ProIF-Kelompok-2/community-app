@@ -1,118 +1,11 @@
 import _ from 'lodash';
-import React, { useState, useEffect, useReducer } from 'react';
+import React, { useState, useEffect } from 'react';
 import PT from 'prop-types';
 import { config } from 'topcoder-react-utils';
 import Logo from 'assets/images/tc-logo.svg';
 
 let TopNavRef;
 let LoginNavRef;
-
-function determineNotificationState(notifications) {
-  const newNoti = notifications.some(noti => !noti.seen);
-  const unreadNoti = notifications.some(noti => !noti.read);
-
-  if (newNoti) {
-    return 'new';
-  }
-
-  if (unreadNoti) {
-    return 'seen';
-  }
-
-  return 'none';
-}
-
-const dateDummy = new Date();
-
-const MARK_AS_READ = 6969;
-const MARK_ALL_AS_READ = 3431;
-const DELETE = 420;
-
-const dummyState = {
-  notifications: [
-    {
-      id: '1',
-      category: 'ProIF Challenge',
-      read: true,
-      seen: true,
-      timestamp: dateDummy.setDate(dateDummy.getDate() - 1),
-      content: 'Notifications testing',
-      completed: false,
-    },
-    {
-      id: '2',
-      category: 'ProIF Challenge',
-      read: false,
-      seen: true,
-      timestamp: dateDummy.setDate(dateDummy.getDate() - 2),
-      content: 'Read This',
-      completed: false,
-    },
-    {
-      id: '3',
-      category: 'ProSI Challenge',
-      read: false,
-      seen: false,
-      timestamp: dateDummy.setDate(dateDummy.getDate() - 3),
-      content: 'ProSI is challenging!!!',
-      completed: false,
-    },
-    {
-      id: '4',
-      category: 'MIBD Challenge',
-      read: true,
-      seen: true,
-      timestamp: dateDummy.setDate(dateDummy.getDate() - 10),
-      content: '',
-      completed: true,
-    },
-  ],
-  notificationState: 'new',
-};
-
-const reducer = (state, action) => {
-  switch (action.type) {
-    case MARK_AS_READ: {
-      const newState = JSON.parse(JSON.stringify(state));
-
-      for (let i = 0; i < state.notifications.length; i += 1) {
-        if (state.notifications[i].id === action.payload) {
-          newState.notifications[i].read = true;
-          newState.notifications[i].seen = true;
-
-          break;
-        }
-      }
-
-      newState.notificationState = determineNotificationState(newState.notifications);
-
-      return newState;
-    }
-    case DELETE: {
-      const newState = JSON.parse(JSON.stringify(state));
-
-      newState.notifications = newState.notifications.filter(noti => noti.id !== action.payload);
-      newState.notificationState = determineNotificationState(newState.notifications);
-
-      return newState;
-    }
-    case MARK_ALL_AS_READ: {
-      const newState = JSON.parse(JSON.stringify(state));
-
-      for (let i = 0; i < newState.notifications.length; i += 1) {
-        newState.notifications[i].seen = true;
-        newState.notifications[i].read = true;
-      }
-
-      newState.notificationState = 'none';
-
-      return newState;
-    }
-    default: {
-      return null;
-    }
-  }
-};
 
 try {
   // eslint-disable-next-line global-require
@@ -123,8 +16,12 @@ try {
   // window is undefined
 }
 
-const Header = ({ profile }) => {
-  const [state, dispatch] = useReducer(reducer, dummyState);
+const Header = ({
+  profile,
+  notifications,
+  notificationState,
+  markAllAsRead,
+}) => {
   const [activeLevel1Id, setActiveLevel1Id] = useState();
   const [path, setPath] = useState();
   const [openMore, setOpenMore] = useState(true);
@@ -164,8 +61,9 @@ const Header = ({ profile }) => {
           rightMenu={(
             <LoginNavRef
               loggedIn={!_.isEmpty(profile)}
-              notificationButtonState={state.notificationState}
-              notifications={dummyState.notifications}
+              notificationButtonState={notificationState}
+              notifications={notifications}
+              onNotificationMarkAll={() => markAllAsRead()}
               accountMenu={config.ACCOUNT_MENU}
               switchText={config.ACCOUNT_MENU_SWITCH_TEXT}
               onSwitch={handleSwitchMenu}
@@ -194,6 +92,9 @@ const Header = ({ profile }) => {
 
 Header.defaultProps = {
   profile: null,
+  notifications: [],
+  notificationState: 'none',
+  markAllAsRead: () => null,
 };
 
 Header.propTypes = {
@@ -201,6 +102,9 @@ Header.propTypes = {
     photoURL: PT.string,
     handle: PT.string,
   }),
+  notifications: PT.arrayOf(PT.object),
+  notificationState: PT.string,
+  markAllAsRead: PT.func,
 };
 
 export default Header;
