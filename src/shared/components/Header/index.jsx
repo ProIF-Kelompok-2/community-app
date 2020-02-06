@@ -20,7 +20,9 @@ const Header = ({
   profile,
   notifications,
   notificationState,
+  markAsRead,
   markAllAsRead,
+  deleteNotification,
 }) => {
   const [activeLevel1Id, setActiveLevel1Id] = useState();
   const [path, setPath] = useState();
@@ -63,7 +65,9 @@ const Header = ({
               loggedIn={!_.isEmpty(profile)}
               notificationButtonState={notificationState}
               notifications={notifications}
-              onNotificationMarkAll={() => markAllAsRead()}
+              onNotificationMark={markAsRead}
+              onNotificationMarkAll={markAllAsRead}
+              onNotificationDismiss={deleteNotification}
               accountMenu={config.ACCOUNT_MENU}
               switchText={config.ACCOUNT_MENU_SWITCH_TEXT}
               onSwitch={handleSwitchMenu}
@@ -94,7 +98,9 @@ Header.defaultProps = {
   profile: null,
   notifications: [],
   notificationState: 'none',
+  markAsRead: () => null,
   markAllAsRead: () => null,
+  deleteNotification: () => null,
 };
 
 Header.propTypes = {
@@ -104,7 +110,9 @@ Header.propTypes = {
   }),
   notifications: PT.arrayOf(PT.object),
   notificationState: PT.string,
+  markAsRead: PT.func,
   markAllAsRead: PT.func,
+  deleteNotification: PT.func,
 };
 
 export default Header;

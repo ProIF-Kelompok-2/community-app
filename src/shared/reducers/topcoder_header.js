@@ -116,7 +116,7 @@ function create(initialState = dummyState) {
       ...state,
       currentNav: payload,
     }),
-    [a.markAsRead]: (state, { id }) => {
+    [a.markAsRead]: (state, { payload: { id } }) => {
       const newState = JSON.parse(JSON.stringify(state));
 
       for (let i = 0; i < state.notifications.length; i += 1) {
@@ -132,11 +132,10 @@ function create(initialState = dummyState) {
 
       return newState;
     },
-    [a.deleteNotification]: (state, { id }) => {
+    [a.deleteNotification]: (state, { payload: { id } }) => {
       const newState = JSON.parse(JSON.stringify(state));
 
       newState.notifications = newState.notifications.filter(noti => noti.id !== id);
-      newState.notificationState = determineNotificationState(newState.notifications);
 
       return newState;
     },

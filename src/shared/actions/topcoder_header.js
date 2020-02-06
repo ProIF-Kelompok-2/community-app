@@ -66,7 +66,7 @@ export default createActions({
 
     SET_CURRENT_NAV: setCurrentNav,
 
-    DELETE_NOTIFICATIONS: targetNotification,
+    DELETE_NOTIFICATION: targetNotification,
     MARK_AS_READ: targetNotification,
     MARK_ALL_AS_READ: _.noop,
   },
